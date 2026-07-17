@@ -49,13 +49,7 @@
                                 <br><small class="text-muted">({{ $log->changer->role ?? 'N/A' }})</small>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                Belum ada riwayat perubahan status.
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

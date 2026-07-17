@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($applications as $app)
+                    @foreach ($applications as $app)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $app->jobPosting->title }}</td>
@@ -32,6 +32,17 @@
                                     <span class="badge bg-success">Offering</span>
                                 @elseif($app->status == 'rejected')
                                     <span class="badge bg-danger">Ditolak</span>
+                                @endif
+
+                                @if($app->interviewSchedule)
+                                    <div class="mt-2 p-2 border rounded bg-light small">
+                                        <strong><i class='bx bx-calendar-event'></i> Jadwal:</strong><br>
+                                        {{ \Carbon\Carbon::parse($app->interviewSchedule->schedule_time)->format('d M Y, H:i') }}<br>
+                                        <strong>Lokasi/Link:</strong> {{ $app->interviewSchedule->location_or_link }}
+                                        @if($app->interviewSchedule->notes)
+                                            <br><strong>Catatan:</strong> {{ $app->interviewSchedule->notes }}
+                                        @endif
+                                    </div>
                                 @endif
                             </td>
                             <td>
@@ -79,14 +90,7 @@
                                 </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                Belum ada riwayat lamaran. <br>
-                                <a href="{{ route('jobs.index') }}" class="btn btn-primary btn-sm mt-2">Cari Lowongan</a>
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

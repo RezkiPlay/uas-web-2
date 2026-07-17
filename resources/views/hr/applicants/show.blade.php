@@ -67,38 +67,73 @@
                             </td>
                             <td>{{ \Carbon\Carbon::parse($app->applied_at)->format('d M Y, H:i') }}</td>
                             <td>
-                                <form action="{{ route('hr.applications.status.update', $app) }}" method="POST" class="d-flex gap-2 align-items-center">
-                                    @csrf
-                                    @method('patch')
-                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                                        <option value="applied" {{ $app->status == 'applied' ? 'selected' : '' }}>Applied</option>
-                                        <option value="interview" {{ $app->status == 'interview' ? 'selected' : '' }}>Interview</option>
-                                        <option value="assessment" {{ $app->status == 'assessment' ? 'selected' : '' }}>Assessment</option>
-                                        <option value="offered" {{ $app->status == 'offered' ? 'selected' : '' }}>Offered</option>
-                                        <option value="rejected" {{ $app->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                    </select>
-                                    
-                                    @if($app->status == 'applied')
-                                        <span class="badge bg-secondary ms-1 w-50">Applied</span>
-                                    @elseif($app->status == 'interview')
-                                        <span class="badge bg-primary ms-1 w-50">Interview</span>
-                                    @elseif($app->status == 'assessment')
-                                        <span class="badge bg-info text-dark ms-1 w-50">Assessment</span>
-                                    @elseif($app->status == 'offered')
-                                        <span class="badge bg-success ms-1 w-50">Offered</span>
-                                    @elseif($app->status == 'rejected')
-                                        <span class="badge bg-danger ms-1 w-50">Rejected</span>
+                                <div class="d-flex flex-column gap-2">
+                                    <form action="{{ route('hr.applications.status.update', $app) }}" method="POST" class="d-flex gap-2 align-items-center">
+                                        @csrf
+                                        @method('patch')
+                                        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                            <option value="applied" {{ $app->status == 'applied' ? 'selected' : '' }}>Applied</option>
+                                            <option value="interview" {{ $app->status == 'interview' ? 'selected' : '' }}>Interview</option>
+                                            <option value="assessment" {{ $app->status == 'assessment' ? 'selected' : '' }}>Assessment</option>
+                                            <option value="offered" {{ $app->status == 'offered' ? 'selected' : '' }}>Offered</option>
+                                            <option value="rejected" {{ $app->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                        </select>
+                                        
+                                        @if($app->status == 'applied')
+                                            <span class="badge bg-secondary ms-1 w-50">Applied</span>
+                                        @elseif($app->status == 'interview')
+                                            <span class="badge bg-primary ms-1 w-50">Interview</span>
+                                        @elseif($app->status == 'assessment')
+                                            <span class="badge bg-info text-dark ms-1 w-50">Assessment</span>
+                                        @elseif($app->status == 'offered')
+                                            <span class="badge bg-success ms-1 w-50">Offered</span>
+                                        @elseif($app->status == 'rejected')
+                                            <span class="badge bg-danger ms-1 w-50">Rejected</span>
+                                        @endif
+                                    </form>
+
+                                    @if($app->status === 'interview')
+                                        <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#interviewModal{{ $app->id }}">
+                                            <i class='bx bx-calendar-event'></i> {{ $app->interviewSchedule ? 'Edit Jadwal' : 'Jadwalkan Interview' }}
+                                        </button>
+
+                                        <!-- Interview Modal -->
+                                        <div class="modal fade" id="interviewModal{{ $app->id }}" tabindex="-1" aria-labelledby="interviewModalLabel{{ $app->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form action="{{ route('hr.applications.interview.store', $app) }}" method="POST">
+                                                        @csrf
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="interviewModalLabel{{ $app->id }}">Jadwal Interview - {{ $app->applicant->user->name }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-start">
+                                                            <div class="mb-3">
+                                                                <label class="form-label required">Tanggal & Waktu</label>
+                                                                <input type="datetime-local" class="form-control" name="schedule_time" required value="{{ $app->interviewSchedule ? \Carbon\Carbon::parse($app->interviewSchedule->schedule_time)->format('Y-m-d\TH:i') : '' }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label required">Lokasi / Link Meeting</label>
+                                                                <input type="text" class="form-control" name="location_or_link" required placeholder="Contoh: Google Meet / Ruang Rapat Lt 2" value="{{ $app->interviewSchedule->location_or_link ?? '' }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Catatan (Opsional)</label>
+                                                                <textarea class="form-control" name="notes" rows="3" placeholder="Contoh: Harap membawa laptop">{{ $app->interviewSchedule->notes ?? '' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
-                                </form>
+                                </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                Belum ada pelamar yang mendaftar untuk posisi ini.
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

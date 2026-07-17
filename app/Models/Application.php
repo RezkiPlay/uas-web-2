@@ -27,4 +27,9 @@ class Application extends Model
     {
         return $this->hasMany(ApplicationStatusLog::class)->latest();
     }
+
+    public function interviewSchedule()
+    {
+        return $this->hasOne(InterviewSchedule::class);
+    }
 }
