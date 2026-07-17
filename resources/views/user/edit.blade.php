@@ -72,8 +72,9 @@
                         <select class="form-select select2-default @error('role') is-invalid  @enderror" id="role"
                             name="role" required>
                             <option value="">Pilih Role</option>
-                            <option value="Superadmin" @selected(old('role', $user->role) == 'Superadmin')>Superadmin</option>
-                            <option value="Admin" @selected(old('role', $user->role) == 'Admin')>Admin</option>
+                            <option value="admin" @selected(old('role', $user->role) == 'admin')>Admin</option>
+                            <option value="hr" @selected(old('role', $user->role) == 'hr')>HR</option>
+                            <option value="pelamar" @selected(old('role', $user->role) == 'pelamar')>Pelamar</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">

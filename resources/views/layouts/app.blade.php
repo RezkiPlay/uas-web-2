@@ -284,7 +284,7 @@
                 </a>
             </li>
 
-            @if (Auth::user()->role == 'Superadmin')
+            @if (Auth::user()->role == 'admin')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? '' : 'collapsed' }}"
                         href="{{ route('user.index') }}">

@@ -15,14 +15,19 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Tamus Tahir',
-                'email' => 'tamus@gmail.com',
-                'role' => 'Superadmin',
+                'name'  => 'Administrator',
+                'email' => 'admin@rekrutmudah.test',
+                'role'  => 'admin',
             ],
             [
-                'name' => 'Joh Doe',
-                'email' => 'admin@gmail.com',
-                'role' => 'Admin',
+                'name'  => 'HR Manager',
+                'email' => 'hr@rekrutmudah.test',
+                'role'  => 'hr',
+            ],
+            [
+                'name'  => 'Pelamar Contoh',
+                'email' => 'pelamar@rekrutmudah.test',
+                'role'  => 'pelamar',
             ],
         ];
 
@@ -32,9 +37,9 @@ class UserSeeder extends Seeder
             }
 
             User::factory()->create([
-                'name' => $user['name'],
+                'name'  => $user['name'],
                 'email' => $user['email'],
-                'role' => $user['role'],
+                'role'  => $user['role'],
             ]);
         }
     }

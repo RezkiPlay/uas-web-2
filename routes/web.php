@@ -13,6 +13,8 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('login.authenticate');
+    Route::get('/register', [LoginController::class, 'register'])->name('register');
+    Route::post('/register', [LoginController::class, 'storeRegister'])->name('register.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -24,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/edit', [DashboardController::class, 'edit'])->name('dashboard.edit');
     Route::put('/dashboard/update', [DashboardController::class, 'update'])->name('dashboard.update');
 
-    Route::resource('/user', UserController::class)->middleware('role:Superadmin');
+    Route::resource('/user', UserController::class)->middleware('role:admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');

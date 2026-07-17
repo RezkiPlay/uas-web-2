@@ -16,12 +16,50 @@ class LoginController extends Controller
         $password = request()->cookie('remember_password');
 
         return view('login.index', [
-            'title' => 'login',
-            'setting' => Setting::first(),
-            'email' => $email,
+            'title'    => 'login',
+            'setting'  => Setting::first(),
+            'email'    => $email,
             'password' => $password,
             'remember' => $email ? true : false
         ]);
+    }
+
+    public function register()
+    {
+        return view('login.register', [
+            'title'   => 'Daftar Akun Pelamar',
+            'setting' => Setting::first(),
+        ]);
+    }
+
+    public function storeRegister(Request $request): RedirectResponse
+    {
+        $validate = $request->validate([
+            'name'            => 'required',
+            'email'           => 'required|email|lowercase|unique:users,email',
+            'password'        => 'required|min:8',
+            'passwordconfirm' => 'required|same:password',
+        ], [
+            'name.required'            => 'Nama wajib diisi',
+            'email.required'           => 'Email wajib diisi',
+            'email.email'              => 'Format email tidak valid',
+            'email.unique'             => 'Email sudah terdaftar',
+            'password.required'        => 'Password wajib diisi',
+            'password.min'             => 'Password minimal 8 karakter',
+            'passwordconfirm.required' => 'Konfirmasi password wajib diisi',
+            'passwordconfirm.same'     => 'Konfirmasi password tidak cocok',
+        ]);
+
+        // Self-registration HANYA menghasilkan role pelamar — tidak ada input role dari user
+        \App\Models\User::create([
+            'name'              => $validate['name'],
+            'email'             => $validate['email'],
+            'password'          => bcrypt($validate['password']),
+            'role'              => 'pelamar',
+            'email_verified_at' => now(),
+        ]);
+
+        return to_route('login')->withSuccess('Pendaftaran berhasil! Silakan login.');
     }
     /**
      * Handle an authentication attempt.

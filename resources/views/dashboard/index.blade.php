@@ -57,8 +57,8 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Superadmin</p>
-                            <h2 class="fw-bold mb-0">{{ $superadminCount }}</h2>
+                            <p class="text-muted mb-1 small">Admin</p>
+                            <h2 class="fw-bold mb-0">{{ $adminCount }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 rounded-circle p-3">
                             <i class='bx bx-shield fs-2 text-success'></i>
@@ -68,7 +68,7 @@
                 <div class="card-footer bg-success bg-opacity-10 border-0 py-2">
                     <small class="text-success fw-semibold">
                         <i class='bx bx-check-circle me-1'></i>
-                        Full access users
+                        Pengawas sistem
                     </small>
                 </div>
             </div>
@@ -79,8 +79,8 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Admin</p>
-                            <h2 class="fw-bold mb-0">{{ $adminCount }}</h2>
+                            <p class="text-muted mb-1 small">HR</p>
+                            <h2 class="fw-bold mb-0">{{ $hrCount }}</h2>
                         </div>
                         <div class="bg-info bg-opacity-10 rounded-circle p-3">
                             <i class='bx bx-user-check fs-2 text-info'></i>
@@ -90,7 +90,30 @@
                 <div class="card-footer bg-info bg-opacity-10 border-0 py-2">
                     <small class="text-info fw-semibold">
                         <i class='bx bx-user-circle me-1'></i>
-                        Standard access users
+                        Operasional rekrutmen
+                    </small>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1 small">Pelamar</p>
+                            <h2 class="fw-bold mb-0">{{ $pelamarCount }}</h2>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                            <i class='bx bx-briefcase fs-2 text-warning'></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-warning bg-opacity-10 border-0 py-2">
+                    <small class="text-warning fw-semibold">
+                        <i class='bx bx-id-card me-1'></i>
+                        Kandidat terdaftar
                     </small>
                 </div>
             </div>
