@@ -277,6 +277,14 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('jobs.*') ? '' : 'collapsed' }}"
+                    href="{{ route('jobs.index') }}" target="_blank">
+                    <i class='bx bx-search'></i>
+                    <span>Eksplor Lowongan</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('setting.*') ? '' : 'collapsed' }}"
                     href="{{ route('setting.index') }}">
                     <i class='bx bx-cog'></i>
@@ -322,6 +330,13 @@
                         href="{{ route('hr.jobs.index') }}">
                         <i class='bx bx-briefcase'></i>
                         <span>Lowongan Saya</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('hr.applicants.*') ? '' : 'collapsed' }}"
+                        href="{{ route('hr.applicants.index') }}">
+                        <i class='bx bx-group'></i>
+                        <span>Pelamar Masuk</span>
                     </a>
                 </li>
             @endif

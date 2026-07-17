@@ -53,6 +53,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/hr/jobs/{job}', [App\Http\Controllers\HrJobPostingController::class, 'update'])->name('hr.jobs.update');
         Route::patch('/hr/jobs/{job}/submit', [App\Http\Controllers\HrJobPostingController::class, 'submit'])->name('hr.jobs.submit');
         Route::patch('/hr/jobs/{job}/close', [App\Http\Controllers\HrJobPostingController::class, 'close'])->name('hr.jobs.close');
+        
+        // HR Applicant Management Routes
+        Route::get('/hr/applicants', [App\Http\Controllers\HrApplicantController::class, 'index'])->name('hr.applicants.index');
+        Route::get('/hr/applicants/{job}', [App\Http\Controllers\HrApplicantController::class, 'show'])->name('hr.applicants.show');
+        Route::patch('/hr/applications/{application}/status', [App\Http\Controllers\HrApplicantController::class, 'updateStatus'])->name('hr.applications.status.update');
     });
 
     // Admin Job Posting Routes
