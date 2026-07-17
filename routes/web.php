@@ -10,6 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Public Job Postings
+Route::get('/jobs', [App\Http\Controllers\PublicJobPostingController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/{job}', [App\Http\Controllers\PublicJobPostingController::class, 'show'])->name('jobs.show');
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('login.authenticate');
@@ -38,6 +42,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/department/{department}/edit', [App\Http\Controllers\DepartmentController::class, 'edit'])->name('department.edit');
         Route::put('/department/{department}', [App\Http\Controllers\DepartmentController::class, 'update'])->name('department.update');
         Route::delete('/department/{department}', [App\Http\Controllers\DepartmentController::class, 'destroy'])->name('department.destroy');
+    });
+
+    // HR Job Posting Routes
+    Route::middleware('role:hr')->group(function () {
+        Route::get('/hr/jobs', [App\Http\Controllers\HrJobPostingController::class, 'index'])->name('hr.jobs.index');
+        Route::get('/hr/jobs/create', [App\Http\Controllers\HrJobPostingController::class, 'create'])->name('hr.jobs.create');
+        Route::post('/hr/jobs', [App\Http\Controllers\HrJobPostingController::class, 'store'])->name('hr.jobs.store');
+        Route::get('/hr/jobs/{job}/edit', [App\Http\Controllers\HrJobPostingController::class, 'edit'])->name('hr.jobs.edit');
+        Route::put('/hr/jobs/{job}', [App\Http\Controllers\HrJobPostingController::class, 'update'])->name('hr.jobs.update');
+        Route::patch('/hr/jobs/{job}/submit', [App\Http\Controllers\HrJobPostingController::class, 'submit'])->name('hr.jobs.submit');
+        Route::patch('/hr/jobs/{job}/close', [App\Http\Controllers\HrJobPostingController::class, 'close'])->name('hr.jobs.close');
+    });
+
+    // Admin Job Posting Routes
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/admin/jobs', [App\Http\Controllers\AdminJobPostingController::class, 'index'])->name('admin.jobs.index');
+        Route::get('/admin/jobs/{job}', [App\Http\Controllers\AdminJobPostingController::class, 'show'])->name('admin.jobs.show');
+        Route::patch('/admin/jobs/{job}/approve', [App\Http\Controllers\AdminJobPostingController::class, 'approve'])->name('admin.jobs.approve');
+        Route::patch('/admin/jobs/{job}/reject', [App\Http\Controllers\AdminJobPostingController::class, 'reject'])->name('admin.jobs.reject');
     });
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');

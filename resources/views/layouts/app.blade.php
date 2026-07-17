@@ -294,10 +294,34 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.jobs.*') ? '' : 'collapsed' }}"
+                        href="{{ route('admin.jobs.index') }}">
+                        <i class='bx bx-briefcase'></i>
+                        <span>Review Lowongan</span>
+                        @php
+                            $pendingCount = \App\Models\JobPosting::where('status', 'pending')->count();
+                        @endphp
+                        @if($pendingCount > 0)
+                            <span class="badge bg-danger ms-auto">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? '' : 'collapsed' }}"
                         href="{{ route('user.index') }}">
                         <i class='bx bx-user-pin'></i>
                         <span>User</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (Auth::user()->role == 'hr')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('hr.jobs.*') ? '' : 'collapsed' }}"
+                        href="{{ route('hr.jobs.index') }}">
+                        <i class='bx bx-briefcase'></i>
+                        <span>Lowongan Saya</span>
                     </a>
                 </li>
             @endif

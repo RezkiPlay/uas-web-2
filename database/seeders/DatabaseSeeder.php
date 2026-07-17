@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SettingSeeder::class,
             DepartmentSeeder::class,
+            JobPostingSeeder::class,
         ]);
     }
 }

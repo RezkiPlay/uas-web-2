@@ -29,4 +29,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function jobPostings()
+    {
+        return $this->hasMany(JobPosting::class, 'created_by');
+    }
 }
