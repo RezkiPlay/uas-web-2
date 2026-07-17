@@ -18,7 +18,7 @@ class ApplicationController extends Controller
         
         $applications = [];
         if ($applicant) {
-            $applications = Application::with('jobPosting.department')
+            $applications = Application::with(['jobPosting.department', 'statusLogs.changer'])
                 ->where('applicant_id', $applicant->id)
                 ->latest()
                 ->get();
@@ -52,10 +52,17 @@ class ApplicationController extends Controller
         }
 
         // Create application
-        Application::create([
+        $application = Application::create([
             'job_posting_id' => $job->id,
             'applicant_id' => $applicant->id,
             'status' => 'applied'
+        ]);
+
+        \App\Models\ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'previous_status' => null,
+            'new_status' => 'applied',
+            'changed_by' => Auth::id(),
         ]);
 
         return redirect()->route('applicant.applications.index')->withSuccess('Berhasil melamar pekerjaan! Semoga beruntung.');

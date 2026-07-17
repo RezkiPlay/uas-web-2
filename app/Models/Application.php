@@ -22,4 +22,9 @@ class Application extends Model
     {
         return $this->belongsTo(Applicant::class);
     }
+
+    public function statusLogs()
+    {
+        return $this->hasMany(ApplicationStatusLog::class)->latest();
+    }
 }

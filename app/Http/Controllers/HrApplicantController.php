@@ -62,9 +62,20 @@ class HrApplicantController extends Controller
             'status' => 'required|in:applied,interview,assessment,offered,rejected'
         ]);
 
+        $previousStatus = $application->status;
+
         $application->update([
             'status' => $request->status
         ]);
+
+        if ($previousStatus !== $request->status) {
+            \App\Models\ApplicationStatusLog::create([
+                'application_id' => $application->id,
+                'previous_status' => $previousStatus,
+                'new_status' => $request->status,
+                'changed_by' => Auth::id(),
+            ]);
+        }
 
         return back()->withSuccess('Status pelamar berhasil diperbarui.');
     }

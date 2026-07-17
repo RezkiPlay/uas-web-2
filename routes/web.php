@@ -68,6 +68,11 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/jobs/{job}/reject', [App\Http\Controllers\AdminJobPostingController::class, 'reject'])->name('admin.jobs.reject');
     });
 
+    // Logs Route (Admin & HR)
+    Route::middleware('role:admin,hr')->group(function () {
+        Route::get('/logs', [App\Http\Controllers\StatusLogController::class, 'index'])->name('logs.index');
+    });
+
     // Pelamar Routes
     Route::middleware('role:pelamar')->group(function () {
         Route::get('/applicant/profile', [App\Http\Controllers\ApplicantProfileController::class, 'edit'])->name('applicant.profile.edit');

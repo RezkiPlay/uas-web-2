@@ -341,6 +341,16 @@
                 </li>
             @endif
 
+            @if (in_array(Auth::user()->role, ['admin', 'hr']))
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('logs.*') ? '' : 'collapsed' }}"
+                        href="{{ route('logs.index') }}">
+                        <i class='bx bx-history'></i>
+                        <span>Riwayat Status</span>
+                    </a>
+                </li>
+            @endif
+
             @if (Auth::user()->role == 'pelamar')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('applicant.profile.*') ? '' : 'collapsed' }}"

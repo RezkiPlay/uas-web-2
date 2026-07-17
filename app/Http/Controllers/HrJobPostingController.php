@@ -56,7 +56,15 @@ class HrJobPostingController extends Controller
 
         DB::beginTransaction();
         try {
-            JobPosting::create($validate);
+            $job = JobPosting::create($validate);
+            
+            \App\Models\ApplicationStatusLog::create([
+                'job_posting_id' => $job->id,
+                'previous_status' => null,
+                'new_status' => 'draft',
+                'changed_by' => Auth::id(),
+            ]);
+
             DB::commit();
             return to_route('hr.jobs.index')->withSuccess('Lowongan berhasil disimpan sebagai draft.');
         } catch (\Exception $e) {
@@ -132,8 +140,17 @@ class HrJobPostingController extends Controller
         if (!in_array($job->status, ['draft', 'rejected'])) {
             return back()->withError('Lowongan tidak valid untuk diajukan.');
         }
-
+        
+        $previousStatus = $job->status;
         $job->update(['status' => 'pending']);
+        
+        \App\Models\ApplicationStatusLog::create([
+            'job_posting_id' => $job->id,
+            'previous_status' => $previousStatus,
+            'new_status' => 'pending',
+            'changed_by' => Auth::id(),
+        ]);
+
         return back()->withSuccess('Lowongan berhasil diajukan untuk approval.');
     }
 
@@ -151,6 +168,14 @@ class HrJobPostingController extends Controller
         }
 
         $job->update(['status' => 'closed']);
+        
+        \App\Models\ApplicationStatusLog::create([
+            'job_posting_id' => $job->id,
+            'previous_status' => 'approved',
+            'new_status' => 'closed',
+            'changed_by' => Auth::id(),
+        ]);
+
         return back()->withSuccess('Lowongan berhasil ditutup.');
     }
 }

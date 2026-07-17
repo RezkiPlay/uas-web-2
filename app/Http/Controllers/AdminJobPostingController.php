@@ -45,6 +45,13 @@ class AdminJobPostingController extends Controller
             'rejection_reason' => null
         ]);
 
+        \App\Models\ApplicationStatusLog::create([
+            'job_posting_id' => $job->id,
+            'previous_status' => 'pending',
+            'new_status' => 'approved',
+            'changed_by' => \Illuminate\Support\Facades\Auth::id(),
+        ]);
+
         return back()->withSuccess('Lowongan berhasil diapprove.');
     }
 
@@ -66,6 +73,13 @@ class AdminJobPostingController extends Controller
         $job->update([
             'status' => 'rejected',
             'rejection_reason' => $request->rejection_reason
+        ]);
+
+        \App\Models\ApplicationStatusLog::create([
+            'job_posting_id' => $job->id,
+            'previous_status' => 'pending',
+            'new_status' => 'rejected',
+            'changed_by' => \Illuminate\Support\Facades\Auth::id(),
         ]);
 
         return back()->withSuccess('Lowongan berhasil direject.');
