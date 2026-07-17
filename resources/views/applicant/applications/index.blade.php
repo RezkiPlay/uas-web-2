@@ -44,6 +44,38 @@
                                         @endif
                                     </div>
                                 @endif
+                                @if($app->offerLetter)
+                                    <div class="mt-2 p-3 border rounded {{ $app->offerLetter->status == 'pending' ? 'bg-warning-subtle border-warning' : ($app->offerLetter->status == 'accepted' ? 'bg-success-subtle border-success' : 'bg-danger-subtle border-danger') }} small">
+                                        <strong><i class='bx bx-envelope'></i> Offering Letter:</strong><br>
+                                        Gaji: Rp {{ number_format($app->offerLetter->salary_offered, 0, ',', '.') }}<br>
+                                        Join Date: {{ \Carbon\Carbon::parse($app->offerLetter->join_date)->translatedFormat('d F Y') }}<br>
+                                        
+                                        @if($app->offerLetter->file_path)
+                                            <a href="{{ Storage::url($app->offerLetter->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2 mb-2 d-block w-100">
+                                                <i class='bx bx-download'></i> Download PDF
+                                            </a>
+                                        @endif
+
+                                        @if($app->offerLetter->status == 'pending')
+                                            <div class="d-flex gap-2 mt-2">
+                                                <form action="{{ route('applicant.offers.respond', $app->offerLetter) }}" method="POST" class="w-50">
+                                                    @csrf
+                                                    <input type="hidden" name="response" value="accept">
+                                                    <button type="submit" class="btn btn-sm btn-success w-100" onclick="return confirm('Anda yakin ingin MENERIMA tawaran ini?')">Terima</button>
+                                                </form>
+                                                <form action="{{ route('applicant.offers.respond', $app->offerLetter) }}" method="POST" class="w-50">
+                                                    @csrf
+                                                    <input type="hidden" name="response" value="decline">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger w-100" onclick="return confirm('Anda yakin ingin MENOLAK tawaran ini?')">Tolak</button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <div class="mt-2 fw-bold text-center">
+                                                Status: {{ strtoupper($app->offerLetter->status) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
                             </td>
                             <td>
                                 <div class="d-flex gap-2">

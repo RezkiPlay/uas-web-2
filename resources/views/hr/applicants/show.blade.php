@@ -197,6 +197,83 @@
                                             </div>
                                         </div>
                                     @endif
+
+                                    @if($app->status === 'offered' || $app->offerLetter)
+                                        <button type="button" class="btn btn-sm {{ $app->offerLetter ? 'btn-success' : 'btn-outline-warning' }} mt-1" data-bs-toggle="modal" data-bs-target="#offerModal{{ $app->id }}">
+                                            <i class='bx bx-envelope'></i> {{ $app->offerLetter ? 'Detail Offering' : 'Terbitkan Offering' }}
+                                        </button>
+
+                                        <!-- Offer Modal -->
+                                        <div class="modal fade" id="offerModal{{ $app->id }}" tabindex="-1" aria-labelledby="offerModalLabel{{ $app->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    @if($app->offerLetter)
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="offerModalLabel{{ $app->id }}">Detail Offering - {{ $app->applicant->user->name }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-start">
+                                                            <div class="mb-3">
+                                                                <label class="form-label text-muted">Gaji Ditawarkan</label>
+                                                                <div class="fs-5 fw-bold">Rp {{ number_format($app->offerLetter->salary_offered, 0, ',', '.') }}</div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label text-muted">Tanggal Bergabung</label>
+                                                                <div class="fs-6">{{ \Carbon\Carbon::parse($app->offerLetter->join_date)->translatedFormat('d F Y') }}</div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label text-muted">Status Respon Pelamar</label>
+                                                                <div>
+                                                                    @if($app->offerLetter->status == 'pending')
+                                                                        <span class="badge bg-warning text-dark">Menunggu Respon</span>
+                                                                    @elseif($app->offerLetter->status == 'accepted')
+                                                                        <span class="badge bg-success">Diterima (Accepted)</span>
+                                                                    @elseif($app->offerLetter->status == 'declined')
+                                                                        <span class="badge bg-danger">Ditolak (Declined)</span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            @if($app->offerLetter->file_path)
+                                                                <div class="mt-4 text-center">
+                                                                    <a href="{{ Storage::url($app->offerLetter->file_path) }}" target="_blank" class="btn btn-outline-primary">
+                                                                        <i class='bx bx-download'></i> Unduh File Offering PDF
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                        </div>
+                                                    @else
+                                                        <form action="{{ route('hr.applications.offer.store', $app) }}" method="POST">
+                                                            @csrf
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="offerModalLabel{{ $app->id }}">Terbitkan Offering - {{ $app->applicant->user->name }}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-start">
+                                                                <div class="alert alert-info small">
+                                                                    Sistem akan otomatis menghasilkan surat penawaran dalam bentuk PDF dan mengirimkannya ke dashboard pelamar.
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label required">Gaji yang Ditawarkan (Rp)</label>
+                                                                    <input type="number" class="form-control" name="salary_offered" required min="0" placeholder="Contoh: 10000000">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label required">Tanggal Bergabung</label>
+                                                                    <input type="date" class="form-control" name="join_date" required min="{{ date('Y-m-d') }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Terbitkan Offering Letter</button>
+                                                            </div>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

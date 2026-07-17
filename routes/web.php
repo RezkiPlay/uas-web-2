@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/hr/applications/{application}/status', [App\Http\Controllers\HrApplicantController::class, 'updateStatus'])->name('hr.applications.status.update');
         Route::post('/hr/applications/{application}/interview', [App\Http\Controllers\HrInterviewController::class, 'storeOrUpdate'])->name('hr.applications.interview.store');
         Route::post('/hr/applications/{application}/assessment', [App\Http\Controllers\HrAssessmentController::class, 'store'])->name('hr.applications.assessment.store');
+        Route::post('/hr/applications/{application}/offer', [App\Http\Controllers\HrOfferController::class, 'store'])->name('hr.applications.offer.store');
     });
 
     // Admin Job Posting Routes
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
         
         Route::middleware(App\Http\Middleware\EnsureProfileCompleted::class)->group(function () {
             Route::get('/applicant/applications', [App\Http\Controllers\ApplicationController::class, 'index'])->name('applicant.applications.index');
+            Route::post('/applicant/offers/{offerLetter}/respond', [App\Http\Controllers\ApplicantOfferController::class, 'respond'])->name('applicant.offers.respond');
             Route::post('/jobs/{job}/apply', [App\Http\Controllers\ApplicationController::class, 'store'])->name('jobs.apply');
         });
     });

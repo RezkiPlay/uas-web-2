@@ -36,7 +36,7 @@ class HrApplicantController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $applications = Application::with(['applicant.user', 'applicant.applicationDocuments', 'interviewSchedule', 'assessmentResult'])
+        $applications = Application::with(['applicant.user', 'applicant.applicationDocuments', 'interviewSchedule', 'assessmentResult', 'offerLetter'])
             ->where('job_posting_id', $job->id)
             ->latest()
             ->get();

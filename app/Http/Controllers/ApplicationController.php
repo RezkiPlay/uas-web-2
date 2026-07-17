@@ -18,7 +18,7 @@ class ApplicationController extends Controller
         
         $applications = [];
         if ($applicant) {
-            $applications = Application::with(['jobPosting.department', 'statusLogs.changer', 'interviewSchedule'])
+            $applications = Application::with(['jobPosting.department', 'statusLogs.changer', 'interviewSchedule', 'offerLetter'])
                 ->where('applicant_id', $applicant->id)
                 ->latest()
                 ->get();

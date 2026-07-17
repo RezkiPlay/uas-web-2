@@ -37,4 +37,9 @@ class Application extends Model
     {
         return $this->hasOne(AssessmentResult::class);
     }
+
+    public function offerLetter()
+    {
+        return $this->hasOne(OfferLetter::class);
+    }
 }
