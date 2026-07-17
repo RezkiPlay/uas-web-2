@@ -63,6 +63,17 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/jobs/{job}/reject', [App\Http\Controllers\AdminJobPostingController::class, 'reject'])->name('admin.jobs.reject');
     });
 
+    // Pelamar Routes
+    Route::middleware('role:pelamar')->group(function () {
+        Route::get('/applicant/profile', [App\Http\Controllers\ApplicantProfileController::class, 'edit'])->name('applicant.profile.edit');
+        Route::put('/applicant/profile', [App\Http\Controllers\ApplicantProfileController::class, 'update'])->name('applicant.profile.update');
+        
+        Route::middleware(App\Http\Middleware\EnsureProfileCompleted::class)->group(function () {
+            Route::get('/applicant/applications', [App\Http\Controllers\ApplicationController::class, 'index'])->name('applicant.applications.index');
+            Route::post('/jobs/{job}/apply', [App\Http\Controllers\ApplicationController::class, 'store'])->name('jobs.apply');
+        });
+    });
+
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });

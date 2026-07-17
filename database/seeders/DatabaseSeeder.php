@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             DepartmentSeeder::class,
             JobPostingSeeder::class,
+            ApplicantSeeder::class,
         ]);
     }
 }

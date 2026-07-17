@@ -54,13 +54,26 @@
 
                                 <hr>
                                 
-                                <!-- Placeholder for Apply Button (Task 4) -->
+                                <!-- Apply Button Logic -->
                                 @auth
                                     @if(Auth::user()->role === 'pelamar')
-                                        <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm" disabled>
-                                            Lamar Pekerjaan Ini
-                                            <br><small class="fs-7 fw-normal">(Fitur Segera Hadir)</small>
-                                        </button>
+                                        @php
+                                            $applicant = Auth::user()->applicant;
+                                            $hasApplied = $applicant ? \App\Models\Application::where('job_posting_id', $job->id)->where('applicant_id', $applicant->id)->exists() : false;
+                                        @endphp
+
+                                        @if($hasApplied)
+                                            <button class="btn btn-secondary btn-lg w-100 rounded-pill shadow-sm" disabled>
+                                                <i class='bx bx-check-circle'></i> Sudah Dilamar
+                                            </button>
+                                        @else
+                                            <form action="{{ route('jobs.apply', $job) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm" onclick="return confirm('Apakah Anda yakin ingin melamar posisi ini?')">
+                                                    Lamar Pekerjaan Ini
+                                                </button>
+                                            </form>
+                                        @endif
                                     @else
                                         <div class="alert alert-info text-center mb-0">
                                             Hanya akun pelamar yang dapat melamar posisi ini.

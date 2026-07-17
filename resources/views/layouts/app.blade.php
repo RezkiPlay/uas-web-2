@@ -326,6 +326,23 @@
                 </li>
             @endif
 
+            @if (Auth::user()->role == 'pelamar')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('applicant.profile.*') ? '' : 'collapsed' }}"
+                        href="{{ route('applicant.profile.edit') }}">
+                        <i class='bx bx-user-circle'></i>
+                        <span>Profil Saya</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('applicant.applications.*') ? '' : 'collapsed' }}"
+                        href="{{ route('applicant.applications.index') }}">
+                        <i class='bx bx-file'></i>
+                        <span>Lamaran Saya</span>
+                    </a>
+                </li>
+            @endif
+
 
         </ul>
 
