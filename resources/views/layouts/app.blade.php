@@ -286,6 +286,14 @@
 
             @if (Auth::user()->role == 'admin')
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('department.*') ? '' : 'collapsed' }}"
+                        href="{{ route('department.index') }}">
+                        <i class='bx bx-git-branch'></i>
+                        <span>Departemen</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? '' : 'collapsed' }}"
                         href="{{ route('user.index') }}">
                         <i class='bx bx-user-pin'></i>

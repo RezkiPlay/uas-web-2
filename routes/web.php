@@ -28,6 +28,18 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/user', UserController::class)->middleware('role:admin');
 
+    // Department Routes
+    Route::middleware('role:admin,hr')->group(function () {
+        Route::get('/department', [App\Http\Controllers\DepartmentController::class, 'index'])->name('department.index');
+    });
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/department/create', [App\Http\Controllers\DepartmentController::class, 'create'])->name('department.create');
+        Route::post('/department', [App\Http\Controllers\DepartmentController::class, 'store'])->name('department.store');
+        Route::get('/department/{department}/edit', [App\Http\Controllers\DepartmentController::class, 'edit'])->name('department.edit');
+        Route::put('/department/{department}', [App\Http\Controllers\DepartmentController::class, 'update'])->name('department.update');
+        Route::delete('/department/{department}', [App\Http\Controllers\DepartmentController::class, 'destroy'])->name('department.destroy');
+    });
+
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });
