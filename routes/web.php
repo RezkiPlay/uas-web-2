@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/hr/applicants/{job}', [App\Http\Controllers\HrApplicantController::class, 'show'])->name('hr.applicants.show');
         Route::patch('/hr/applications/{application}/status', [App\Http\Controllers\HrApplicantController::class, 'updateStatus'])->name('hr.applications.status.update');
         Route::post('/hr/applications/{application}/interview', [App\Http\Controllers\HrInterviewController::class, 'storeOrUpdate'])->name('hr.applications.interview.store');
+        Route::post('/hr/applications/{application}/assessment', [App\Http\Controllers\HrAssessmentController::class, 'store'])->name('hr.applications.assessment.store');
     });
 
     // Admin Job Posting Routes

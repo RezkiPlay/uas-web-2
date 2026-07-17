@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             JobPostingSeeder::class,
             ApplicantSeeder::class,
             InterviewSeeder::class,
+            AssessmentSeeder::class,
         ]);
     }
 }

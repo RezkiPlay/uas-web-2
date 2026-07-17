@@ -32,4 +32,9 @@ class Application extends Model
     {
         return $this->hasOne(InterviewSchedule::class);
     }
+
+    public function assessmentResult()
+    {
+        return $this->hasOne(AssessmentResult::class);
+    }
 }

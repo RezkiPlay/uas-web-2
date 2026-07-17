@@ -130,6 +130,73 @@
                                             </div>
                                         </div>
                                     @endif
+
+                                    @if(in_array($app->status, ['interview', 'assessment']) || $app->assessmentResult)
+                                        <button type="button" class="btn btn-sm {{ $app->assessmentResult ? 'btn-success' : 'btn-outline-info' }} mt-1" data-bs-toggle="modal" data-bs-target="#assessmentModal{{ $app->id }}">
+                                            <i class='bx bx-check-square'></i> {{ $app->assessmentResult ? 'Lihat Penilaian' : 'Input Penilaian' }}
+                                        </button>
+
+                                        <!-- Assessment Modal -->
+                                        <div class="modal fade" id="assessmentModal{{ $app->id }}" tabindex="-1" aria-labelledby="assessmentModalLabel{{ $app->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    @if($app->assessmentResult)
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="assessmentModalLabel{{ $app->id }}">Hasil Penilaian - {{ $app->applicant->user->name }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-start">
+                                                            <div class="mb-3">
+                                                                <label class="form-label text-muted">Skor Penilaian</label>
+                                                                <div class="fs-4 fw-bold {{ $app->assessmentResult->score >= 70 ? 'text-success' : 'text-danger' }}">
+                                                                    {{ $app->assessmentResult->score }} / 100
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label text-muted">Catatan HR</label>
+                                                                <div class="p-2 border rounded bg-light">
+                                                                    {{ $app->assessmentResult->hr_notes ?? '-' }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="alert {{ $app->assessmentResult->score >= 70 ? 'alert-success' : 'alert-danger' }} mb-0">
+                                                                Sistem otomatis mengarahkan pelamar ini ke status <strong>{{ $app->assessmentResult->score >= 70 ? 'Offered' : 'Rejected' }}</strong>.
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                        </div>
+                                                    @else
+                                                        <form action="{{ route('hr.applications.assessment.store', $app) }}" method="POST">
+                                                            @csrf
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="assessmentModalLabel{{ $app->id }}">Input Penilaian - {{ $app->applicant->user->name }}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-start">
+                                                                <div class="alert alert-warning small">
+                                                                    <strong>Perhatian:</strong> Penilaian bersifat final dan tidak dapat diubah. <br>
+                                                                    Skor >= 70 akan otomatis lulus (Offered). <br>
+                                                                    Skor < 70 akan otomatis tidak lulus (Rejected).
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label required">Skor Penilaian (0-100)</label>
+                                                                    <input type="number" class="form-control" name="score" required min="0" max="100" placeholder="Misal: 85">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Catatan HR (Opsional)</label>
+                                                                    <textarea class="form-control" name="hr_notes" rows="3" placeholder="Contoh: Kandidat memiliki komunikasi yang baik"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan Penilaian</button>
+                                                            </div>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
